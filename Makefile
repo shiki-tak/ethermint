@@ -39,6 +39,13 @@ else
 	${GO_MOD} go build $(BUILD_FLAGS) -o build/$(ETHERMINT_CLI_BINARY) ./cmd/emintcli/
 endif
 
+prepare:
+	rm -rf ./source
+	mkdir -p ./source/github.com/ethereum/go-ethereum
+	git clone https://github.com/shiki-tak/go-ethereum.git -b feature/dev-ewasm ./source/github.com/ethereum/go-ethereum
+	mkdir -p ./source/github.com/ethereum/evmc
+	git clone https://github.com/shiki-tak/evmc.git -b v0.6.3 ./source/github.com/ethereum/evmc
+
 install:
 	${GO_MOD} go install $(BUILD_FLAGS) ./cmd/emintd
 	${GO_MOD} go install $(BUILD_FLAGS) ./cmd/emintcli

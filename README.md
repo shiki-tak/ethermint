@@ -1,7 +1,7 @@
 [![CircleCI](https://circleci.com/gh/cosmos/ethermint.svg?style=svg)](https://circleci.com/gh/cosmos/ethermint)
 [![](https://godoc.org/github.com/cosmos/ethermint?status.svg)](http://godoc.org/github.com/cosmos/ethermint) [![Go Report Card](https://goreportcard.com/badge/github.com/cosmos/ethermint)](https://goreportcard.com/report/github.com/cosmos/ethermint)
 
-# Ethermint
+# Ethermint powered by eWASM
 
 __**WARNING:**__ Ethermint is under VERY ACTIVE DEVELOPMENT and should be treated as pre-alpha software. This means it is not meant to be run in production, its APIs are subject to change without warning and should not be relied upon, and it should not be used to hold any value. We will remove this warning when we have a release that is stable, secure, and properly tested.
 
@@ -38,6 +38,16 @@ __**WARNING:**__ Ethermint is under VERY ACTIVE DEVELOPMENT and should be treate
 To build, execute the following commands:
 
 ```bash
+# To prepare go-ethereum, evmc for ewasm vm
+make prepare
+
+# Build ewasm library
+# get <your/build/folder>/tools/ssvm-evmc/libssvm-evmc.dylib on Mac
+git clone https://github.com/second-state/ssvm-evmc.git
+cd ssvm-evmc
+mkdir -p build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON .. && make
+
 # To build the project and install it in $GOBIN
 make install
 
@@ -49,7 +59,12 @@ make build
 
 The following config steps can be performed all at once by executing the `init.sh` file located in the root directory like this:
 ```bash
-./init.sh
+./init.sh <your/build/folder>/tools/ssvm-evmc/libssvm-evmc.dylib
+
+./source/github.com/ethereum/go-ethereum/build/bin/geth attach rpc:http://localhost:8545/
+
+# Compile from solidity to wasm using SOLL's README and run contract with euasmint
+# https://github.com/second-state/SOLL
 ```
 > This bash file removes previous blockchain data from `~/.emintd` and `~/.emintcli`. It uses the `keyring-backend` called `test` that should prevent you from needing to enter a passkey. The `keyring-backend` `test` is unsecured and should not be used in production.
 

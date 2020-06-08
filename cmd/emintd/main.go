@@ -18,6 +18,7 @@ import (
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/cosmos/cosmos-sdk/x/staking"
+	emint "github.com/cosmos/ethermint/types"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -35,6 +36,7 @@ import (
 )
 
 const flagInvCheckPeriod = "inv-check-period"
+const flagVMWasm = "vm-wasm"
 
 var invCheckPeriod uint
 
@@ -87,6 +89,7 @@ func main() {
 	executor := cli.PrepareBaseCmd(rootCmd, "EM", app.DefaultNodeHome)
 	rootCmd.PersistentFlags().UintVar(&invCheckPeriod, flagInvCheckPeriod,
 		0, "Assert registered invariants every N blocks")
+	rootCmd.PersistentFlags().StringVar(&emint.VM, flagVMWasm, "", "External ewasm configuration (default = EVM1)")
 	err := executor.Execute()
 	if err != nil {
 		panic(err)
