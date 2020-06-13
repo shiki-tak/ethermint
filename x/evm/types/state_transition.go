@@ -62,7 +62,12 @@ func (st StateTransition) newEVM(ctx sdk.Context, csdb *CommitStateDB, gasLimit 
 		GasPrice:    gasPrice,
 	}
 
-	return vm.NewEVM(context, csdb, GenerateChainConfig(st.ChainID), vm.Config{})
+	if emint.VM != "" {
+		vm.InitEVMCEwasm(emint.VM)
+		return vm.NewEVM(context, csdb, GenerateWASMChainConfig(st.ChainID), vm.Config{})
+	}
+	return vm.NewEVM(context, csdb, GenerateEVM1ChainConfig(st.ChainID), vm.Config{})
+
 }
 
 // TransitionDb will transition the state by applying the current transaction and

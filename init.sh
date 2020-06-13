@@ -1,13 +1,14 @@
 #!/bin/bash
 
-KEY="mykey"
+KEY="alice"
 CHAINID=8
 MONIKER="localtestnet"
+VM=$1
 
 # remove existing daemon and client
 rm -rf ~/.emint*
 
-make install
+# make install
 
 emintcli config keyring-backend test
 
@@ -47,6 +48,12 @@ emintd validate-genesis
 echo -e '\nrun the following command in a different terminal/window to run the REST server and JSON-RPC:'
 echo -e "emintcli rest-server --laddr \"tcp://localhost:8545\" --unlock-key $KEY --chain-id $CHAINID --trace\n"
 
-# Start the node (remove the --pruning=nothing flag if historical queries are not needed)
-emintd start --pruning=nothing --rpc.unsafe --log_level "main:info,state:info,mempool:info" --trace
+if [[ $1 != "" ]]
+then
+    # Start the node (remove the --pruning=nothing flag if historical queries are not needed)
+    emintd start --vm-wasm $VM --pruning=nothing --rpc.unsafe --log_level "main:info,state:info,mempool:info" --trace
+else
+    # Start the node (remove the --pruning=nothing flag if historical queries are not needed)
+    emintd start --pruning=nothing --rpc.unsafe --log_level "main:info,state:info,mempool:info" --trace
+fi
 

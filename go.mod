@@ -34,3 +34,7 @@ require (
 )
 
 replace github.com/cosmos/cosmos-sdk => github.com/cosmos/cosmos-sdk v0.34.4-0.20200403200637-7f78e61b93a5
+
+replace github.com/ethereum/go-ethereum => ./source/github.com/ethereum/go-ethereum
+
+replace github.com/ethereum/evmc/v7 => ./source/github.com/ethereum/evmc

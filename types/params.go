@@ -10,3 +10,7 @@ const (
 	// Ethermint.
 	DenomDefault = "photon"
 )
+
+var (
+	VM string
+)
